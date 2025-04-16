@@ -26,13 +26,8 @@ void	ft_free_tokenizer(t_tok *token)
 				free(token->tokens[i]);
 				i++;
 			}
+			free(token->tokens);
 		}
-		free(token->tokens);
 		free (token);
 	}
-	// if (error == 0)
-	// {
-	// 	printf("The Malloc Not Located\n");
-	// 	exit (0);
-	// }
 }

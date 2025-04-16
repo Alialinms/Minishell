@@ -11,7 +11,31 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-void	initalization_struct(t_read *line)
+
+void	initalization_struct_pand(t_read *line)
+{
+	line->pand = malloc(sizeof(t_expand));
+	if (!line->pand)
+		exit (0);
+	line->pand->i = 0;
+	line->pand->i_result = 0;
+	line->pand->i_size = 0;
+	line->pand->count = 0;
+	line->pand->j = 0;
+	line->pand->count = 0;
+	line->pand->k = 0;
+	line->pand->i_malloc = 0;
+	line->pand->last_exit_code = NULL;
+	line->pand->string = NULL;
+	line->pand->argv = NULL;
+	line->pand->quoted = NULL;
+	line->pand->input = NULL;
+	line->pand->var_name = NULL;
+	line->pand->var_value = NULL;
+	line->pand->result = NULL;
+}
+
+void	initalization_struct_tok(t_read *line)
 {
 	line->token = malloc(sizeof(t_tok));
 	if (!line->token)
@@ -28,7 +52,8 @@ void	initalization_struct(t_read *line)
 }
 void	initalization(t_read *line, char **envp)
 {
-	initalization_struct(line);
+	initalization_struct_pand(line);
+	initalization_struct_tok(line);
 	line->line = NULL;
 	line->prompt = NULL;
 	line->tokens = NULL;
@@ -82,13 +107,11 @@ int		main(int argc, char **argv, char **envp)
 	(void) argv;
 	initalization(line, envp);
 	ft_get_prompt(line);
-	int	i;
 
-	i = 0;
 	while (1)
 	{
 		line->line = readline(line->prompt);
-		line->line = ft_expander(line->line, ft_itoa(line->exit_status), argv[0]);
+		line->line = ft_expander(line, ft_itoa(line->exit_status), argv[0]);
 		line->tokens = ft_tokenizer(line);
 		if (ft_exit_shell(line))
 			break;
@@ -96,7 +119,7 @@ int		main(int argc, char **argv, char **envp)
 		terminal_shell(line);
 		//ft_printarr(line.tokens);
 		free(line->line);
-		//ft_farray(line->tokens);
+		ft_farray(line->tokens);
 		initialize_tok(line->token);
 	}
 	ft_exit_with_error(line , NULL, 0);

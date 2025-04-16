@@ -91,7 +91,7 @@ char	**ft_tokenizer(t_read *line)
 
 	if (!line->line)
 		return (NULL);
-	//initialize(line->token);
+	initialize_tok(line->token);
 	line->token->input = line->line;
 	i = count(line->token);
 	initialize_tok(line->token);

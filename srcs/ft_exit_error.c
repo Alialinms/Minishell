@@ -14,6 +14,10 @@
 
 void	ft_exit_with_error(t_read *line, char *str, int i)
 {
+	int	j;
+
+	if (line->pand)
+		ft_free_expander(line->pand);
 	if (line->token)
 		ft_free_tokenizer(line->token);
 	if (line->piper != NULL)
@@ -35,6 +39,7 @@ void	ft_exit_with_error(t_read *line, char *str, int i)
 	}
 	if (line->exit_status == 0)
 		line->exit_status = i;
+	j = i;
 	free (line);
-	exit(line->exit_status);
+	exit(j);
 }
